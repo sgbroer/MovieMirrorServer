@@ -1,0 +1,56 @@
+<html>
+
+<body>
+<fieldset>
+  <legend>
+    Movie Mirror Recommendation
+  </legend>
+
+  Problem Area:
+  <br>
+  <input type='text' id='area'>
+  <br>
+  <br>
+    <div>
+      <button id='submit'>Recommend!</button>
+    </div>
+  <br>
+  We recommend:
+  <table>
+    <tr><td>You should watch</td><td id='result'></td></tr>
+  </table>
+</fieldset>
+</body>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script>
+
+  $('#submit').click( () => { recommend(); } );
+
+  function recommend(){
+    let features = {
+     'Problem Area' : $('#area').val()
+   }
+
+    console.log(features);
+
+    $.ajax({
+      type: "POST",
+      contentType: "application/json; charset=utf-8",
+      url: "/recommend",  // Replace with URL of POST handler
+      dataType: "json",
+      async: true,
+      data: JSON.stringify(features),
+      success: (result) => {
+        $('#result').html(result['prediction']);
+      },
+      error: (result) => {
+        alert('Error: did you enter a problem area?')
+        /*
+        function to run with returned object
+        from your POST request if there was a failure
+        */
+      }
+    })
+  }
+  </script>
+</html>
